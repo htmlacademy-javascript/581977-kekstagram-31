@@ -19,9 +19,7 @@ isPalindrome('Лёша на полке клопа нашёл ');
 
 function getNumber(data) {
   let result = '';
-  if (!Number.isNaN(data)) {
-    data = data.toString();
-  }
+  data = data.toString();
   for (let i = 0; i < data.length; i++) {
     if (!Number.isNaN(parseInt(data[i], 10))) {
       result += data[i];
