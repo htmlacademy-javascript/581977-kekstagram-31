@@ -36,3 +36,26 @@ getNumber('а я томат');
 getNumber(2023);
 getNumber(-1);
 getNumber(1.5);
+
+const isMeetingInWorkingHours = (workDayStart, workDayEnd, meetingStart, meetingTime) => {
+  const workDayStartAsArray = workDayStart.split(':');
+  const workDayEndAsArray = workDayEnd.split(':');
+  const meetingStartAsArray = meetingStart.split(':');
+  const workDayStartHour = parseInt(workDayStartAsArray[0], 10);
+  const workDayStartMinute = parseInt(workDayStartAsArray[1], 10);
+  const workDayEndHour = parseInt(workDayEndAsArray[0], 10);
+  const workDayEndMinute = parseInt(workDayEndAsArray[1], 10);
+  const meetingStartHour = parseInt(meetingStartAsArray[0], 10);
+  const meetingStartMinute = parseInt(meetingStartAsArray[1], 10);
+  const minutesInHour = 60;
+  const timeUntilDayEndInHours = (workDayEndHour - meetingStartHour) + ((workDayEndMinute - meetingStartMinute) / minutesInHour);
+  const meetingTimeInHours = meetingTime / minutesInHour;
+
+  return meetingStartHour >= workDayStartHour && meetingStartHour <= workDayEndHour && meetingStartMinute >= workDayStartMinute && meetingStartMinute <= workDayEndMinute && meetingTimeInHours <= timeUntilDayEndInHours;
+};
+
+isMeetingInWorkingHours('08:00', '17:30', '14:00', 90);
+isMeetingInWorkingHours('8:0', '10:0', '8:0', 120);
+isMeetingInWorkingHours('08:00', '14:30', '14:00', 90);
+isMeetingInWorkingHours('14:00', '17:30', '08:0', 90);
+isMeetingInWorkingHours('8:00', '17:30', '08:00', 900);
