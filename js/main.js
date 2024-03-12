@@ -1,1 +1,3 @@
-import './data';
+import {getAllPostedPhoto} from './data';
+
+getAllPostedPhoto();
