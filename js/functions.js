@@ -38,6 +38,7 @@ getNumber(-1);
 getNumber(1.5);
 
 const isMeetingInWorkingHours = (workDayStart, workDayEnd, meetingStart, meetingTime) => {
+  const MINUTES_IN_HOUR = 60;
   const workDayStartAsArray = workDayStart.split(':');
   const workDayEndAsArray = workDayEnd.split(':');
   const meetingStartAsArray = meetingStart.split(':');
@@ -47,9 +48,8 @@ const isMeetingInWorkingHours = (workDayStart, workDayEnd, meetingStart, meeting
   const workDayEndMinute = parseInt(workDayEndAsArray[1], 10);
   const meetingStartHour = parseInt(meetingStartAsArray[0], 10);
   const meetingStartMinute = parseInt(meetingStartAsArray[1], 10);
-  const minutesInHour = 60;
-  const timeUntilDayEndInHours = (workDayEndHour - meetingStartHour) + ((workDayEndMinute - meetingStartMinute) / minutesInHour);
-  const meetingTimeInHours = meetingTime / minutesInHour;
+  const timeUntilDayEndInHours = (workDayEndHour - meetingStartHour) + ((workDayEndMinute - meetingStartMinute) / MINUTES_IN_HOUR);
+  const meetingTimeInHours = meetingTime / MINUTES_IN_HOUR;
 
   return meetingStartHour >= workDayStartHour && meetingStartHour <= workDayEndHour && meetingStartMinute >= workDayStartMinute && meetingStartMinute <= workDayEndMinute && meetingTimeInHours <= timeUntilDayEndInHours;
 };
