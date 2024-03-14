@@ -1,3 +1,1 @@
-import {getAllPostedPhoto} from './data';
-
-getAllPostedPhoto();
+import './drawing-thumbnails';
