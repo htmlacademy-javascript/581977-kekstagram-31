@@ -1,23 +1,26 @@
-import {getAllPostedPhoto} from './data';
+import {allPostedPhotos} from './data';
 
 const pictureTemplate = document.querySelector('#picture').content;
 const picture = pictureTemplate.querySelector('.picture');
 const pictures = document.querySelector('.pictures');
-const picturesFragment = document.createDocumentFragment();
-const allPostedPhotos = getAllPostedPhoto();
 
-allPostedPhotos.forEach((postedPhoto) => {
-  const newPicture = picture.cloneNode(true);
-  const newPictureImage = newPicture.querySelector('.picture__img');
-  const newPictureComments = newPicture.querySelector('.picture__comments');
-  const newPictureLikes = newPicture.querySelector('.picture__likes');
+const renderThumbnails = () => {
+  const picturesFragment = document.createDocumentFragment();
+  allPostedPhotos.forEach((postedPhoto) => {
+    const newPicture = picture.cloneNode(true);
+    const newPictureImage = newPicture.querySelector('.picture__img');
+    const newPictureComments = newPicture.querySelector('.picture__comments');
+    const newPictureLikes = newPicture.querySelector('.picture__likes');
 
-  newPictureImage.src = postedPhoto.url;
-  newPictureImage.alt = postedPhoto.description;
-  newPictureComments.textContent = postedPhoto.comments.length;
-  newPictureLikes.textContent = postedPhoto.likes;
+    newPicture.dataset.id = postedPhoto.id;
+    newPictureImage.src = postedPhoto.url;
+    newPictureImage.alt = postedPhoto.description;
+    newPictureComments.textContent = postedPhoto.comments.length;
+    newPictureLikes.textContent = postedPhoto.likes;
 
-  picturesFragment.append(newPicture);
-});
+    picturesFragment.append(newPicture);
+  });
+  pictures.append(picturesFragment);
+};
 
-pictures.append(picturesFragment);
+export {renderThumbnails};
