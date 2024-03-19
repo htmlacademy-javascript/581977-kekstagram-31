@@ -63,6 +63,6 @@ const generatePostedPhoto = () => ({
   comments: Array.from({length: getRandomInteger(COMMENTS_MIN_AMOUNT, COMMENTS_MAX_AMOUNT)}, generateComment)
 });
 
-const getAllPostedPhoto = () => Array.from({length: ALL_PHOTOS_COUNT}, generatePostedPhoto);
+const allPostedPhotos = Array.from({length: ALL_PHOTOS_COUNT}, generatePostedPhoto);
 
-export {getAllPostedPhoto};
+export {allPostedPhotos};

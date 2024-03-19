@@ -1,1 +1,1 @@
-import './drawing-thumbnails';
+import './gallery';
