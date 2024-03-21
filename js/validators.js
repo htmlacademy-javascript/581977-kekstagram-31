@@ -26,10 +26,7 @@ pristine.addValidator(
 
 const validateHashtagsUniqueness = () => {
   const hashtagsArray = form.querySelector('.text__hashtags').value.split(' ');
-  const newHashtagsArray = [];
-  for (let i = 0; i < hashtagsArray.length; i++) {
-    newHashtagsArray.push(hashtagsArray[i].toLowerCase());
-  }
+  const newHashtagsArray = hashtagsArray.map((hashtag) => hashtag.toLowerCase());
   return (new Set(newHashtagsArray)).size === newHashtagsArray.length;
 };
 pristine.addValidator(
@@ -45,23 +42,8 @@ pristine.addValidator(
   'Превышено количество допустимых символов'
 );
 
-const addFocusListeners = (callback) => {
-  form.querySelector('.text__hashtags').addEventListener('focus', () => {
-    document.removeEventListener('keydown', callback);
-  });
-  form.querySelector('.text__hashtags').addEventListener('blur', () => {
-    document.addEventListener('keydown', callback);
-  });
-  form.querySelector('.text__description').addEventListener('focus', () => {
-    document.removeEventListener('keydown', callback);
-  });
-  form.querySelector('.text__description').addEventListener('blur', () => {
-    document.addEventListener('keydown', callback);
-  });
-};
-
 const validateForm = () => {
   pristine.validate();
 };
 
-export {validateForm, addFocusListeners};
+export {validateForm};

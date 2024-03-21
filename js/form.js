@@ -1,42 +1,43 @@
 import './effects.js';
 import {addScaleListeners, removeScaleListeners} from './scale.js';
-import {addFocusListeners, validateForm} from './validators.js';
+import {validateForm} from './validators.js';
 
 const form = document.querySelector('.img-upload__form');
 const imgUploadPreviewImg = document.querySelector('.img-upload__preview img');
 
-const onDocumentKeydown = (evt) => {
-  if (evt.key === 'Escape') {
-    evt.preventDefault();
-    document.querySelector('.img-upload__overlay').classList.add('hidden');
-    document.querySelector('body').classList.remove('modal-open');
-    document.removeEventListener('keydown', onDocumentKeydown);
-    removeScaleListeners();
-    form.reset();
-  }
-};
-
-const onCloseButtonClick = () => {
+const resetSettings = (callback) => {
   document.querySelector('.img-upload__overlay').classList.add('hidden');
   document.querySelector('body').classList.remove('modal-open');
-  document.querySelector('.img-upload__cancel').removeEventListener('click', onCloseButtonClick);
+  document.removeEventListener('keydown', callback);
   removeScaleListeners();
   form.reset();
 };
 
-document.querySelector('.img-upload__input').addEventListener('change', () => {
+const onDocumentKeydown = (evt) => {
+  const hashtags = form.querySelector('.text__hashtags');
+  const description = form.querySelector('.text__description');
+  if (evt.key === 'Escape' && document.activeElement !== hashtags && document.activeElement !== description) {
+    evt.preventDefault();
+    resetSettings(onDocumentKeydown);
+  }
+};
+
+const onCloseButtonClick = () => {
+  resetSettings(onCloseButtonClick);
+};
+
+document.querySelector('.img-upload__input').addEventListener('change', (evt) => {
   document.querySelector('.img-upload__overlay').classList.remove('hidden');
   document.querySelector('body').classList.add('modal-open');
   document.addEventListener('keydown', onDocumentKeydown);
   document.querySelector('.img-upload__cancel').addEventListener('click', onCloseButtonClick);
-
-  addFocusListeners(onDocumentKeydown);
   addScaleListeners();
 
-  imgUploadPreviewImg.src = 'img/upload-image.jpeg';
+  const image = URL.createObjectURL(evt.target.files[0]);
+  imgUploadPreviewImg.src = image;
   const children = document.querySelector('.effects__list').children;
   for (const child of children) {
-    child.querySelector('.effects__preview').style.backgroundImage = 'url("img/upload-image.jpeg")';
+    child.querySelector('.effects__preview').style.backgroundImage = `url("${image}")`;
   }
   document.querySelector('.img-upload__effect-level').classList.add('hidden');
   imgUploadPreviewImg.style.filter = '';
