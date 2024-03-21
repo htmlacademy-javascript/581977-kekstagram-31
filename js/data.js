@@ -1,4 +1,4 @@
-import {getRandomInteger, getRandomArrayElement, createIdFromRangeGenerator} from './utils';
+import {getRandomInteger, getRandomArrayElement, createIdFromRangeGenerator} from './utils.js';
 
 const MESSAGES = [
   'Всё отлично!',

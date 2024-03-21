@@ -1,6 +1,6 @@
-import './effects';
-import {addScaleListeners, removeScaleListeners} from './scale';
-import {addFocusListeners, validateForm} from './validators';
+import './effects.js';
+import {addScaleListeners, removeScaleListeners} from './scale.js';
+import {addFocusListeners, validateForm} from './validators.js';
 
 const form = document.querySelector('.img-upload__form');
 const imgUploadPreviewImg = document.querySelector('.img-upload__preview img');
