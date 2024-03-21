@@ -1,4 +1,4 @@
-import {allPostedPhotos} from './data';
+import {allPostedPhotos} from './data.js';
 
 const pictureTemplate = document.querySelector('#picture').content;
 const picture = pictureTemplate.querySelector('.picture');

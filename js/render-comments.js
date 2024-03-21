@@ -1,7 +1,6 @@
 const SHOWN_COMMENTS_COUNT = 5;
 let comments = [];
 let commentsCounter = 0;
-let commentsTotal = 0;
 
 const bigPicture = document.querySelector('.big-picture');
 const bigPictureComments = bigPicture.querySelector('.social__comments');
@@ -19,31 +18,25 @@ const renderComment = (data, index) => {
 const showNextComments = () => {
   const commentsContainer = document.createDocumentFragment();
 
+  for (let i = 0; i < Math.min(comments.length, SHOWN_COMMENTS_COUNT); i++) {
+    commentsContainer.append(renderComment(comments, i));
+    commentsCounter++;
+  }
+  bigPictureComments.append(commentsContainer);
   if (comments.length <= SHOWN_COMMENTS_COUNT) {
-    for (let i = 0; i < comments.length; i++) {
-      commentsContainer.append(renderComment(comments, i));
-      commentsCounter++;
-    }
     bigPictureCommentsLoader.classList.add('hidden');
     bigPictureCommentsLoader.removeEventListener('click', showNextComments);
   } else {
-    for (let i = 0; i < SHOWN_COMMENTS_COUNT; i++) {
-      commentsContainer.append(renderComment(comments, i));
-      commentsCounter++;
-    }
     comments = comments.slice(SHOWN_COMMENTS_COUNT);
     bigPictureCommentsLoader.classList.remove('hidden');
   }
-  bigPictureComments.append(commentsContainer);
-
   bigPictureShownComments.textContent = commentsCounter.toString();
-  bigPictureTotalComments.textContent = commentsTotal.toString();
 };
 
 const renderComments = (photo) => {
   bigPictureComments.innerHTML = '';
   commentsCounter = 0;
-  commentsTotal = photo.comments.length;
+  bigPictureTotalComments.textContent = photo.comments.length.toString();
   comments = photo.comments;
   showNextComments();
   bigPictureCommentsLoader.addEventListener('click', showNextComments);
