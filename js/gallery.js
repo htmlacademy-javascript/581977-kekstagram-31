@@ -1,5 +1,6 @@
 import {renderThumbnails} from './drawing-thumbnails';
 import {openModal} from './full-size-mode';
+import './form';
 
 renderThumbnails();
 
