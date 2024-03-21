@@ -55,6 +55,7 @@ const changeEffect = (effect, levelOfIntensity) => {
       break;
     case 'none':
       imgUploadPreviewImg.style.filter = '';
+      break;
   }
 };
 
