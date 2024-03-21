@@ -1,6 +1,6 @@
-import {renderThumbnails} from './drawing-thumbnails';
-import {openModal} from './full-size-mode';
-import './form';
+import {renderThumbnails} from './drawing-thumbnails.js';
+import {openModal} from './full-size-mode.js';
+import './form.js';
 
 renderThumbnails();
 
