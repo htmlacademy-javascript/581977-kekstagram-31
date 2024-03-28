@@ -1,4 +1,3 @@
-import {allPostedPhotos} from './data.js';
 import {renderComments} from './render-comments.js';
 
 const body = document.querySelector('body');
@@ -23,8 +22,8 @@ const onCloseButtonClick = () => {
   bigPictureCloseButton.removeEventListener('click', onCloseButtonClick);
 };
 
-const openModal = (pictureId) => {
-  const photo = allPostedPhotos.find((postedPhoto) => postedPhoto.id === parseInt(pictureId.dataset.id, 10));
+const openModal = (data, pictureId) => {
+  const photo = data.find((postedPhoto) => postedPhoto.id === parseInt(pictureId.dataset.id, 10));
 
   bigPicture.classList.remove('hidden');
   body.classList.add('modal-open');

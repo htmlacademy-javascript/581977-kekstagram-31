@@ -42,8 +42,6 @@ pristine.addValidator(
   'Превышено количество допустимых символов'
 );
 
-const validateForm = () => {
-  pristine.validate();
-};
+const validateForm = () => pristine.validate();
 
 export {validateForm};

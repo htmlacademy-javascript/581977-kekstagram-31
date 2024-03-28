@@ -22,4 +22,12 @@ const createIdFromRangeGenerator = (min = 1, max = Infinity) => {
   };
 };
 
-export {getRandomInteger, getRandomArrayElement, createIdFromRangeGenerator};
+const cloneTemplate = (locator) => {
+  const body = document.querySelector('body');
+  const template = document.querySelector(`#${locator}`).content;
+  const templateElement = template.querySelector(`.${locator}`);
+  const newElement = templateElement.cloneNode(true);
+  body.append(newElement);
+};
+
+export {getRandomInteger, getRandomArrayElement, createIdFromRangeGenerator, cloneTemplate};

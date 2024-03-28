@@ -1,12 +1,10 @@
-import {allPostedPhotos} from './data.js';
-
 const pictureTemplate = document.querySelector('#picture').content;
 const picture = pictureTemplate.querySelector('.picture');
 const pictures = document.querySelector('.pictures');
 
-const renderThumbnails = () => {
+const renderThumbnails = (data) => {
   const picturesFragment = document.createDocumentFragment();
-  allPostedPhotos.forEach((postedPhoto) => {
+  data.forEach((postedPhoto) => {
     const newPicture = picture.cloneNode(true);
     const newPictureImage = newPicture.querySelector('.picture__img');
     const newPictureComments = newPicture.querySelector('.picture__comments');
