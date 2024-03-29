@@ -66,7 +66,18 @@ noUiSlider.create(sliderElement, {
   },
   start: EFFECTS.none.max,
   step: EFFECTS.none.step,
-  connect: 'lower'
+  connect: 'lower',
+  format: {
+    to: function (value) {
+      if (Number.isInteger(value)) {
+        return value.toFixed(0);
+      }
+      return value.toFixed(1);
+    },
+    from: function (value) {
+      return parseFloat(value);
+    },
+  },
 });
 
 sliderElement.noUiSlider.on('update', () => {
@@ -91,7 +102,6 @@ document.querySelector('.effects__list').addEventListener('click', (evt) => {
       },
       start: EFFECTS[currentEffect].max,
       step: EFFECTS[currentEffect].step,
-      connect: 'lower'
     });
   }
 });

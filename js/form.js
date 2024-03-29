@@ -1,6 +1,6 @@
 import './effects.js';
 import {addScaleListeners, removeScaleListeners} from './scale.js';
-import {validateForm} from './validators.js';
+import {pristine} from './validators.js';
 import {sendData} from './api.js';
 import {cloneTemplate} from './utils.js';
 
@@ -17,6 +17,7 @@ const resetSettings = (callback) => {
   if (body.contains(document.querySelector('.success'))) {
     document.querySelector('.success').remove();
   }
+  pristine.reset();
   form.reset();
 };
 
@@ -60,6 +61,7 @@ const onCloseButtonClick = (evt) => {
 };
 
 const onSuccess = () => {
+  body.classList.remove('modal-open');
   cloneTemplate('success');
   document.addEventListener('click', onOutsideClick);
   document.querySelector('.success__button').addEventListener('click', onCloseButtonClick);
@@ -93,7 +95,7 @@ document.querySelector('.img-upload__input').addEventListener('change', (evt) =>
 
 form.addEventListener('submit', (evt) => {
   evt.preventDefault();
-  const isValid = validateForm();
+  const isValid = pristine.validate();
   const requestBody = new FormData(evt.target);
   if (isValid) {
     const submitButton = form.querySelector('.img-upload__submit');

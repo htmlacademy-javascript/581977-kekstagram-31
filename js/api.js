@@ -13,7 +13,7 @@ const getData = () => fetch(`${BASE_URL}/data`)
   .then((response) => response.json())
   .catch(errorMessageHandler);
 
-const sendData = (body, onSuccess, onError) => fetch(`${BASE_URL}`, {method: 'POST', body: body})
+const sendData = (body, onSuccess, onError) => fetch(`${BASE_URL}/`, {method: 'POST', body: body})
   .then((response) => response.ok ? onSuccess() : onError())
   .catch(() => onError());
 
