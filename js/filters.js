@@ -22,8 +22,6 @@ const clearPreviousRender = () => {
   }
 };
 
-const sortCommentsDesc = (a, b) => b.comments.length - a.comments.length;
-
 const filterDefault = (cb, data) => {
   changeToActiveFilterType(filterDefaultButton, [filterRandomButton, filterDiscussedButton]);
   cb(data);
@@ -43,7 +41,7 @@ const filterRandom = (cb, data) => {
 
 const filterDiscussed = (cb, data) => {
   changeToActiveFilterType(filterDiscussedButton, [filterDefaultButton, filterRandomButton]);
-  const sortedArray = data.slice().sort(sortCommentsDesc);
+  const sortedArray = data.slice().sort((a, b) => b.comments.length - a.comments.length);
   cb(sortedArray);
 };
 
