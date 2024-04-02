@@ -22,15 +22,7 @@ const clearPreviousRender = () => {
   }
 };
 
-const sortCommentsDesc = (a, b) => {
-  if (a.comments.length < b.comments.length) {
-    return 1;
-  }
-  if (a.comments.length > b.comments.length) {
-    return -1;
-  }
-  return 0;
-};
+const sortCommentsDesc = (a, b) => b.comments.length - a.comments.length;
 
 const filterDefault = (cb, data) => {
   changeToActiveFilterType(filterDefaultButton, [filterRandomButton, filterDiscussedButton]);
