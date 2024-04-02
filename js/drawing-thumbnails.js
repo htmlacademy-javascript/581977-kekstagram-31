@@ -1,3 +1,5 @@
+import {clearPreviousRender} from './filters.js';
+
 const pictureTemplate = document.querySelector('#picture').content;
 const picture = pictureTemplate.querySelector('.picture');
 const pictures = document.querySelector('.pictures');
@@ -18,6 +20,7 @@ const renderThumbnails = (data) => {
 
     picturesFragment.append(newPicture);
   });
+  clearPreviousRender();
   pictures.append(picturesFragment);
 };
 

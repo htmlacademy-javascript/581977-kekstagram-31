@@ -7,9 +7,20 @@ const pristine = new Pristine(form, {
   errorTextClass: 'img-upload__field-wrapper--error'
 }, true);
 
+const createNewHashtagsArray = (hashtagsArray) => {
+  const newHashtagsArray = [];
+  hashtagsArray.forEach((hashtag) => {
+    if (hashtag !== '') {
+      newHashtagsArray.push(hashtag.toLowerCase());
+    }
+  });
+  return newHashtagsArray;
+};
+
 const validateHashtags = () => {
   const hashtags = form.querySelector('.text__hashtags').value;
-  return (hashtags === '' || hashtags.split(' ').every((hashtag) => REGEXP.test(hashtag)));
+  const hashtagsArray = hashtags.split(' ');
+  return (hashtags === '' || createNewHashtagsArray(hashtagsArray).every((hashtag) => REGEXP.test(hashtag)));
 };
 pristine.addValidator(
   form.querySelector('.text__hashtags'),
@@ -17,7 +28,10 @@ pristine.addValidator(
   'Введён невалидный хэштег'
 );
 
-const validateHashtagsLength = () => form.querySelector('.text__hashtags').value.split(' ').length <= 5;
+const validateHashtagsLength = () => {
+  const hashtagsArray = form.querySelector('.text__hashtags').value.split(' ');
+  return createNewHashtagsArray(hashtagsArray).length <= 5;
+};
 pristine.addValidator(
   form.querySelector('.text__hashtags'),
   validateHashtagsLength,
@@ -26,8 +40,7 @@ pristine.addValidator(
 
 const validateHashtagsUniqueness = () => {
   const hashtagsArray = form.querySelector('.text__hashtags').value.split(' ');
-  const newHashtagsArray = hashtagsArray.map((hashtag) => hashtag.toLowerCase());
-  return (new Set(newHashtagsArray)).size === newHashtagsArray.length;
+  return (new Set(createNewHashtagsArray(hashtagsArray))).size === createNewHashtagsArray(hashtagsArray).length;
 };
 pristine.addValidator(
   form.querySelector('.text__hashtags'),
@@ -42,6 +55,4 @@ pristine.addValidator(
   'Превышено количество допустимых символов'
 );
 
-const validateForm = () => pristine.validate();
-
-export {validateForm};
+export {pristine};
