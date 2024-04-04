@@ -1,12 +1,13 @@
 import {cloneTemplate} from './utils.js';
 
 const BASE_URL = 'https://31.javascript.htmlacademy.pro/kekstagram';
+const GET_DATA_ERROR_TIMEOUT = 5000;
 
 const onGetDataError = () => {
   cloneTemplate('data-error');
   setTimeout(() => {
     document.querySelector('.data-error').remove();
-  }, 5000);
+  }, GET_DATA_ERROR_TIMEOUT);
 };
 
 const getData = () => fetch(`${BASE_URL}/data`)
