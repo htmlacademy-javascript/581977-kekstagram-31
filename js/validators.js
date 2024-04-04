@@ -1,4 +1,5 @@
 const REGEXP = /^#[a-zа-яё0-9]{1,19}$/i;
+const COMMENT_MAX_LENGTH = 140;
 
 const formElement = document.querySelector('.img-upload__form');
 const pristine = new Pristine(formElement, {
@@ -49,7 +50,7 @@ pristine.addValidator(
   'Хэштеги повторяются'
 );
 
-const validateCommentLength = () => formElement.querySelector('.text__description').value.length <= 140;
+const validateCommentLength = () => formElement.querySelector('.text__description').value.length <= COMMENT_MAX_LENGTH;
 pristine.addValidator(
   formElement.querySelector('.text__description'),
   validateCommentLength,
