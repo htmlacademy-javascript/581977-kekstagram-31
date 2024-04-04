@@ -1,27 +1,27 @@
 import {clearPreviousRender} from './filters.js';
 
 const pictureTemplate = document.querySelector('#picture').content;
-const picture = pictureTemplate.querySelector('.picture');
-const pictures = document.querySelector('.pictures');
+const pictureElement = pictureTemplate.querySelector('.picture');
+const picturesElement = document.querySelector('.pictures');
 
-const renderThumbnails = (data) => {
+const renderThumbnails = (photos) => {
   const picturesFragment = document.createDocumentFragment();
-  data.forEach((postedPhoto) => {
-    const newPicture = picture.cloneNode(true);
-    const newPictureImage = newPicture.querySelector('.picture__img');
-    const newPictureComments = newPicture.querySelector('.picture__comments');
-    const newPictureLikes = newPicture.querySelector('.picture__likes');
+  photos.forEach((photo) => {
+    const newPicture = pictureElement.cloneNode(true);
+    const newPictureImageElement = newPicture.querySelector('.picture__img');
+    const newPictureCommentsElement = newPicture.querySelector('.picture__comments');
+    const newPictureLikesElement = newPicture.querySelector('.picture__likes');
 
-    newPicture.dataset.id = postedPhoto.id;
-    newPictureImage.src = postedPhoto.url;
-    newPictureImage.alt = postedPhoto.description;
-    newPictureComments.textContent = postedPhoto.comments.length;
-    newPictureLikes.textContent = postedPhoto.likes;
+    newPicture.dataset.id = photo.id;
+    newPictureImageElement.src = photo.url;
+    newPictureImageElement.alt = photo.description;
+    newPictureCommentsElement.textContent = photo.comments.length;
+    newPictureLikesElement.textContent = photo.likes;
 
     picturesFragment.append(newPicture);
   });
   clearPreviousRender();
-  pictures.append(picturesFragment);
+  picturesElement.append(picturesFragment);
 };
 
 export {renderThumbnails};
