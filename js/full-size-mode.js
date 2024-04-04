@@ -1,41 +1,39 @@
 import {renderComments} from './render-comments.js';
 
-const body = document.querySelector('body');
-const bigPicture = document.querySelector('.big-picture');
-const bigPictureCloseButton = bigPicture.querySelector('.big-picture__cancel');
-const bigPictureImage = bigPicture.querySelector('.big-picture__img img');
-const bigPictureLikes = bigPicture.querySelector('.likes-count');
-const bigPictureDescription = bigPicture.querySelector('.social__caption');
+const bodyElement = document.querySelector('body');
+const bigPictureElement = document.querySelector('.big-picture');
+const bigPictureCloseButtonElement = bigPictureElement.querySelector('.big-picture__cancel');
+const bigPictureImageElement = bigPictureElement.querySelector('.big-picture__img img');
+const bigPictureLikesElement = bigPictureElement.querySelector('.likes-count');
+const bigPictureDescriptionElement = bigPictureElement.querySelector('.social__caption');
 
-const onDocumentKeydown = (evt) => {
+const resetSettings = () => {
+  bigPictureElement.classList.add('hidden');
+  bodyElement.classList.remove('modal-open');
+  document.removeEventListener('keydown', onCloseModal);
+  bigPictureCloseButtonElement.removeEventListener('click', onCloseModal);
+};
+
+function onCloseModal (evt) {
   if (evt.key === 'Escape') {
     evt.preventDefault();
-    bigPicture.classList.add('hidden');
-    document.querySelector('body').classList.remove('modal-open');
-    document.removeEventListener('keydown', onDocumentKeydown);
   }
-};
+  resetSettings();
+}
 
-const onCloseButtonClick = () => {
-  bigPicture.classList.add('hidden');
-  document.querySelector('body').classList.remove('modal-open');
-  bigPictureCloseButton.removeEventListener('click', onCloseButtonClick);
-};
+const openModal = (photos, photoId) => {
+  const currentPhoto = photos.find((photo) => photo.id === parseInt(photoId.dataset.id, 10));
 
-const openModal = (data, pictureId) => {
-  const photo = data.find((postedPhoto) => postedPhoto.id === parseInt(pictureId.dataset.id, 10));
+  bigPictureElement.classList.remove('hidden');
+  bodyElement.classList.add('modal-open');
+  bigPictureImageElement.src = currentPhoto.url;
+  bigPictureLikesElement.textContent = currentPhoto.likes;
+  bigPictureDescriptionElement.textContent = currentPhoto.description;
 
-  bigPicture.classList.remove('hidden');
-  body.classList.add('modal-open');
+  renderComments(currentPhoto);
 
-  bigPictureImage.src = photo.url;
-  bigPictureLikes.textContent = photo.likes;
-  bigPictureDescription.textContent = photo.description;
-
-  renderComments(photo);
-
-  document.addEventListener('keydown', onDocumentKeydown);
-  bigPictureCloseButton.addEventListener('click', onCloseButtonClick);
+  document.addEventListener('keydown', onCloseModal);
+  bigPictureCloseButtonElement.addEventListener('click', onCloseModal);
 };
 
 export {openModal};

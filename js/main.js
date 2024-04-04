@@ -13,6 +13,7 @@ getData().then((data) => {
     document.querySelector('.img-filters').classList.remove('img-filters--inactive');
     renderFilters(debounce(renderThumbnails, RENDER_FILTERS_TIMEOUT_DELAY), data);
     document.querySelector('.pictures').addEventListener('click', (evt) => {
+      evt.preventDefault();
       const pictureId = evt.target.closest('.picture');
       if (pictureId) {
         openModal(data, pictureId);
