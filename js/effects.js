@@ -1,60 +1,37 @@
 const EFFECTS = {
-  'chrome': {
-    'min': 0,
-    'max': 1,
-    'step': 0.1
-  },
-  'sepia': {
-    'min': 0,
-    'max': 1,
-    'step': 0.1
-  },
-  'marvin': {
-    'min': 0,
-    'max': 100,
-    'step': 1
-  },
-  'phobos': {
-    'min': 0,
-    'max': 3,
-    'step': 0.1
-  },
-  'heat': {
-    'min': 1,
-    'max': 3,
-    'step': 0.1
-  },
-  'none': {
-    'min': 0,
-    'max': 0,
-    'step': 0
-  }
+  'chrome': {'min': 0, 'max': 1, 'step': 0.1},
+  'sepia': {'min': 0, 'max': 1, 'step': 0.1},
+  'marvin': {'min': 0, 'max': 100, 'step': 1},
+  'phobos': {'min': 0, 'max': 3, 'step': 0.1},
+  'heat': {'min': 1, 'max': 3, 'step': 0.1},
+  'none': {'min': 0, 'max': 0, 'step': 0}
 };
 
-const imgUploadPreviewImg = document.querySelector('.img-upload__preview img');
+const imgUploadPreviewImgElement = document.querySelector('.img-upload__preview img');
 const sliderElement = document.querySelector('.effect-level__slider');
 const valueElement = document.querySelector('.effect-level__value');
+const effectsListElement = document.querySelector('.effects__list');
 let currentEffect = 'none';
 
 const changeEffect = (effect, levelOfIntensity) => {
   switch (effect) {
     case 'chrome':
-      imgUploadPreviewImg.style.filter = `grayscale(${levelOfIntensity})`;
+      imgUploadPreviewImgElement.style.filter = `grayscale(${levelOfIntensity})`;
       break;
     case 'sepia':
-      imgUploadPreviewImg.style.filter = `sepia(${levelOfIntensity})`;
+      imgUploadPreviewImgElement.style.filter = `sepia(${levelOfIntensity})`;
       break;
     case 'marvin':
-      imgUploadPreviewImg.style.filter = `invert(${levelOfIntensity}%)`;
+      imgUploadPreviewImgElement.style.filter = `invert(${levelOfIntensity}%)`;
       break;
     case 'phobos':
-      imgUploadPreviewImg.style.filter = `blur(${levelOfIntensity}px)`;
+      imgUploadPreviewImgElement.style.filter = `blur(${levelOfIntensity}px)`;
       break;
     case 'heat':
-      imgUploadPreviewImg.style.filter = `brightness(${levelOfIntensity})`;
+      imgUploadPreviewImgElement.style.filter = `brightness(${levelOfIntensity})`;
       break;
     case 'none':
-      imgUploadPreviewImg.style.filter = '';
+      imgUploadPreviewImgElement.style.filter = '';
       break;
   }
 };
@@ -85,7 +62,7 @@ sliderElement.noUiSlider.on('update', () => {
   changeEffect(currentEffect, valueElement.value);
 });
 
-document.querySelector('.effects__list').addEventListener('click', (evt) => {
+const onEffectsClick = (evt) => {
   const currentElement = evt.target.closest('.effects__item');
   if (currentElement) {
     const currentElementInput = currentElement.querySelector('input');
@@ -104,4 +81,14 @@ document.querySelector('.effects__list').addEventListener('click', (evt) => {
       step: EFFECTS[currentEffect].step,
     });
   }
-});
+};
+
+const addEffectsListener = () => {
+  effectsListElement.addEventListener('click', onEffectsClick);
+};
+
+const removeEffectsListener = () => {
+  effectsListElement.removeEventListener('click', onEffectsClick);
+};
+
+export {addEffectsListener, removeEffectsListener};
