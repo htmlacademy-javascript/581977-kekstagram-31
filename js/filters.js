@@ -1,10 +1,11 @@
 import {getRandomArrayElement} from './utils.js';
 
 const COUNT_OF_RANDOM_PHOTOS = 10;
-const filtersForm = document.querySelector('.img-filters__form');
-const filterDefaultButton = filtersForm.querySelector('#filter-default');
-const filterRandomButton = filtersForm.querySelector('#filter-random');
-const filterDiscussedButton = filtersForm.querySelector('#filter-discussed');
+
+const filtersFormElement = document.querySelector('.img-filters__form');
+const filterDefaultButtonElement = filtersFormElement.querySelector('#filter-default');
+const filterRandomButtonElement = filtersFormElement.querySelector('#filter-random');
+const filterDiscussedButtonElement = filtersFormElement.querySelector('#filter-discussed');
 
 const changeToActiveFilterType = (active, others) => {
   others.forEach((other) => {
@@ -16,44 +17,44 @@ const changeToActiveFilterType = (active, others) => {
 };
 
 const clearPreviousRender = () => {
-  const pictures = document.querySelector('.pictures');
-  while (pictures.contains(pictures.querySelector('.picture'))) {
-    pictures.querySelector('.picture').remove();
+  const picturesElement = document.querySelector('.pictures');
+  while (picturesElement.contains(picturesElement.querySelector('.picture'))) {
+    picturesElement.querySelector('.picture').remove();
   }
 };
 
-const filterDefault = (cb, data) => {
-  changeToActiveFilterType(filterDefaultButton, [filterRandomButton, filterDiscussedButton]);
-  cb(data);
+const filterDefault = (callback, data) => {
+  changeToActiveFilterType(filterDefaultButtonElement, [filterRandomButtonElement, filterDiscussedButtonElement]);
+  callback(data);
 };
 
-const filterRandom = (cb, data) => {
-  changeToActiveFilterType(filterRandomButton, [filterDefaultButton, filterDiscussedButton]);
+const filterRandom = (callback, data) => {
+  changeToActiveFilterType(filterRandomButtonElement, [filterDefaultButtonElement, filterDiscussedButtonElement]);
   const randomPhotosArray = [];
   while (randomPhotosArray.length < COUNT_OF_RANDOM_PHOTOS) {
-    const randomArray = getRandomArrayElement(data);
-    if (!randomPhotosArray.includes(randomArray)){
-      randomPhotosArray.push(randomArray);
+    const randomArrayElement = getRandomArrayElement(data);
+    if (!randomPhotosArray.includes(randomArrayElement)){
+      randomPhotosArray.push(randomArrayElement);
     }
   }
-  cb(randomPhotosArray);
+  callback(randomPhotosArray);
 };
 
-const filterDiscussed = (cb, data) => {
-  changeToActiveFilterType(filterDiscussedButton, [filterDefaultButton, filterRandomButton]);
+const filterDiscussed = (callback, data) => {
+  changeToActiveFilterType(filterDiscussedButtonElement, [filterDefaultButtonElement, filterRandomButtonElement]);
   const sortedArray = data.slice().sort((a, b) => b.comments.length - a.comments.length);
-  cb(sortedArray);
+  callback(sortedArray);
 };
 
-const renderFilters = (cb, data) => {
-  filtersForm.addEventListener('click', (evt) => {
+const renderFilters = (callback, data) => {
+  filtersFormElement.addEventListener('click', (evt) => {
     evt.preventDefault();
-    if (evt.target === filterDefaultButton) {
-      filterDefault(cb, data);
-    } else if (evt.target === filterRandomButton) {
-      filterRandom(cb, data);
-    } else if (evt.target === filterDiscussedButton) {
-      filterDiscussed(cb, data);
+    if (evt.target === filterDefaultButtonElement) {
+      filterDefault(callback, data);
+    } else if (evt.target === filterRandomButtonElement) {
+      filterRandom(callback, data);
+    } else if (evt.target === filterDiscussedButtonElement) {
+      filterDiscussed(callback, data);
     }
   });
 };

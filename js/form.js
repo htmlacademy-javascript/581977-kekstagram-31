@@ -1,67 +1,76 @@
-import './effects.js';
+import {addEffectsListener, removeEffectsListener} from './effects.js';
 import {addScaleListeners, removeScaleListeners} from './scale.js';
 import {pristine} from './validators.js';
 import {sendData} from './api.js';
 import {cloneTemplate} from './utils.js';
 
-const body = document.querySelector('body');
-const form = document.querySelector('.img-upload__form');
-const imgUploadPreviewImg = document.querySelector('.img-upload__preview img');
+const bodyElement = document.querySelector('body');
+const formElement = document.querySelector('.img-upload__form');
+const imgUploadPreviewImgElement = document.querySelector('.img-upload__preview img');
+const imgUploadCancelElement = document.querySelector('.img-upload__cancel');
+const imgUploadOverlayElement = document.querySelector('.img-upload__overlay');
 
-const resetSettings = (callback) => {
-  document.querySelector('.img-upload__overlay').classList.add('hidden');
-  body.classList.remove('modal-open');
-  document.removeEventListener('keydown', callback);
-  document.removeEventListener('click', callback);
+const resetSettings = () => {
+  imgUploadOverlayElement.classList.add('hidden');
+  bodyElement.classList.remove('modal-open');
+  document.removeEventListener('keydown', onDocumentKeydown);
+  document.removeEventListener('click', onOutsideClick);
+  imgUploadCancelElement.removeEventListener('click', onCloseButtonClick);
+  formElement.removeEventListener('submit', onSubmitForm);
   removeScaleListeners();
-  if (body.contains(document.querySelector('.success'))) {
+  removeEffectsListener();
+  if (bodyElement.contains(document.querySelector('.success'))) {
     document.querySelector('.success').remove();
   }
   pristine.reset();
-  form.reset();
+  formElement.reset();
 };
 
-const onDocumentKeydown = (evt) => {
-  const hashtags = form.querySelector('.text__hashtags');
-  const description = form.querySelector('.text__description');
-  if (evt.key === 'Escape' && document.activeElement !== hashtags && document.activeElement !== description) {
+const resetErrorSettings = () => {
+  document.querySelector('.error').remove();
+  document.removeEventListener('keydown', onDocumentKeydownModal);
+  document.removeEventListener('click', onOutsideClick);
+  document.addEventListener('keydown', onDocumentKeydown);
+};
+
+function onDocumentKeydown (evt) {
+  const hashtagsElement = formElement.querySelector('.text__hashtags');
+  const descriptionElement = formElement.querySelector('.text__description');
+  if (evt.key === 'Escape' && document.activeElement !== hashtagsElement && document.activeElement !== descriptionElement) {
     evt.preventDefault();
-    resetSettings(onDocumentKeydown);
+    resetSettings();
   }
-};
+}
 
-const onDocumentKeydownModal = (evt) => {
+function onDocumentKeydownModal (evt) {
   if (evt.key === 'Escape') {
     evt.preventDefault();
-    document.querySelector('.error').remove();
-    document.addEventListener('keydown', onDocumentKeydown);
-    document.removeEventListener('keydown', onDocumentKeydownModal);
+    resetErrorSettings();
   }
-};
+}
 
-const onOutsideClick = (evt) => {
+function onOutsideClick (evt) {
   if (evt.target === document.querySelector('.success')) {
     document.querySelector('.success').remove();
-    resetSettings(onOutsideClick);
+    resetSettings();
   } else if (evt.target === document.querySelector('.error')) {
-    document.querySelector('.error').remove();
-    document.removeEventListener('click', onOutsideClick);
+    resetErrorSettings();
   }
-};
+}
 
-const onCloseButtonClick = (evt) => {
+function onCloseButtonClick (evt) {
   if (evt.target === document.querySelector('.success__button')) {
     document.querySelector('.success').remove();
-    resetSettings(onCloseButtonClick);
+    resetSettings();
   } else if (evt.target === document.querySelector('.error__button')) {
-    document.querySelector('.error').remove();
+    resetErrorSettings();
   } else {
-    resetSettings(onCloseButtonClick);
+    resetSettings();
   }
-};
+}
 
 const onSuccess = () => {
-  body.classList.remove('modal-open');
+  bodyElement.classList.remove('modal-open');
   cloneTemplate('success');
   document.addEventListener('click', onOutsideClick);
   document.querySelector('.success__button').addEventListener('click', onCloseButtonClick);
@@ -75,34 +84,36 @@ const onError = () => {
   document.querySelector('.error__button').addEventListener('click', onCloseButtonClick);
 };
 
+function onSubmitForm(evt) {
+  evt.preventDefault();
+  const isValid = pristine.validate();
+  const requestBody = new FormData(evt.target);
+  if (isValid) {
+    const submitButtonElement = formElement.querySelector('.img-upload__submit');
+    submitButtonElement.disabled = true;
+    sendData(requestBody, onSuccess, onError)
+      .finally(() => {
+        submitButtonElement.disabled = false;
+      });
+  }
+}
+
 document.querySelector('.img-upload__input').addEventListener('change', (evt) => {
-  document.querySelector('.img-upload__overlay').classList.remove('hidden');
-  body.classList.add('modal-open');
+  imgUploadOverlayElement.classList.remove('hidden');
+  bodyElement.classList.add('modal-open');
   document.addEventListener('keydown', onDocumentKeydown);
-  document.querySelector('.img-upload__cancel').addEventListener('click', onCloseButtonClick);
+  imgUploadCancelElement.addEventListener('click', onCloseButtonClick);
+  formElement.addEventListener('submit', onSubmitForm);
   addScaleListeners();
+  addEffectsListener();
 
   const image = URL.createObjectURL(evt.target.files[0]);
-  imgUploadPreviewImg.src = image;
+  imgUploadPreviewImgElement.src = image;
   const children = document.querySelector('.effects__list').children;
   for (const child of children) {
     child.querySelector('.effects__preview').style.backgroundImage = `url("${image}")`;
   }
   document.querySelector('.img-upload__effect-level').classList.add('hidden');
-  imgUploadPreviewImg.style.filter = '';
-  imgUploadPreviewImg.style.transform = '';
-});
-
-form.addEventListener('submit', (evt) => {
-  evt.preventDefault();
-  const isValid = pristine.validate();
-  const requestBody = new FormData(evt.target);
-  if (isValid) {
-    const submitButton = form.querySelector('.img-upload__submit');
-    submitButton.disabled = true;
-    sendData(requestBody, onSuccess, onError)
-      .finally(() => {
-        submitButton.disabled = false;
-      });
-  }
+  imgUploadPreviewImgElement.style.filter = '';
+  imgUploadPreviewImgElement.style.transform = '';
 });

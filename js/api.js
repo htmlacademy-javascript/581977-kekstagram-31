@@ -2,7 +2,7 @@ import {cloneTemplate} from './utils.js';
 
 const BASE_URL = 'https://31.javascript.htmlacademy.pro/kekstagram';
 
-const errorMessageHandler = () => {
+const onGetDataError = () => {
   cloneTemplate('data-error');
   setTimeout(() => {
     document.querySelector('.data-error').remove();
@@ -11,7 +11,7 @@ const errorMessageHandler = () => {
 
 const getData = () => fetch(`${BASE_URL}/data`)
   .then((response) => response.json())
-  .catch(errorMessageHandler);
+  .catch(onGetDataError);
 
 const sendData = (body, onSuccess, onError) => fetch(`${BASE_URL}/`, {method: 'POST', body: body})
   .then((response) => response.ok ? onSuccess() : onError())
