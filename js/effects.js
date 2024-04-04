@@ -63,7 +63,6 @@ sliderElement.noUiSlider.on('update', () => {
 });
 
 const onEffectsClick = (evt) => {
-  evt.preventDefault();
   const currentElement = evt.target.closest('.effects__item');
   if (currentElement) {
     const currentElementInput = currentElement.querySelector('input');
